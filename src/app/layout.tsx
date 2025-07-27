@@ -24,6 +24,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Bud | One App Studio",
   description: "Bud is an AI productivity app for managing notes and tasks.",
+  other: {
+    "google-site-verification": "uzyTa_pgDdFdx-i-J0cdK1HuluguNRjg30Rdyd7dg7Y",
+  },
 };
 
 export default function RootLayout({
@@ -33,9 +36,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="google-site-verification" content="uzyTa_pgDdFdx-i-J0cdK1HuluguNRjg30Rdyd7dg7Y" />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
