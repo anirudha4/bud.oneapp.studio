@@ -37,3 +37,8 @@ export const getSession = async (): Promise<Session | null> => {
         return null;
     }
 }
+
+export const clearSession = async () => {
+    const cookieStore = await cookies();
+    cookieStore.delete('session');
+}

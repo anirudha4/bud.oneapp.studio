@@ -3,8 +3,9 @@ import React from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import Button from '@/components/custom/button'
-import { setSession } from '@/lib/session'
+import { clearSession, setSession } from '@/lib/session'
 import { toast } from 'sonner'
+import { Separator } from '../ui/separator'
 
 type Props = {
     name?: string;
@@ -24,6 +25,12 @@ const SettingForm = ({ apiKey = '', name = '' }: Props) => {
             toast.success('Settings saved successfully!');
         }
     };
+
+    const handleLogout = async () => {
+        await clearSession();
+        toast.success('Logged out successfully!');
+        window.location.reload();
+    };
     return (
         <div className="p-4">
             <div className="bg-background p-4 md:p-6 rounded-2xl border">
@@ -39,13 +46,18 @@ const SettingForm = ({ apiKey = '', name = '' }: Props) => {
                     </div>
                     <div className="flex flex-col gap-2">
                         <Label>
-                            API KEY
+                            GEMINI API KEY
                         </Label>
                         <Input defaultValue={apiKey} placeholder="Enter your API key" name='apiKey' />
                     </div>
-                    <Button className='w-fit bg-foreground text-background hover:text-background hover:bg-foreground border-none mt-3'>
-                        Save Settings
-                    </Button>
+                    <div className="flex items-center justify-between">
+                        <Button className='w-fit bg-foreground text-background hover:text-background hover:bg-foreground border-none mt-3'>
+                            Save Settings
+                        </Button>
+                        <Button onClick={handleLogout} type='button' className='w-fit bg-red-500 text-white hover:bg-red-600 mt-3'>
+                            Logout
+                        </Button>
+                    </div>
                 </form>
             </div>
         </div>

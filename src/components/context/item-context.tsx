@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { ItemType } from '@/lib/types';
+import { sortBy } from 'lodash';
 
 type Item = ItemType
 type List = {
@@ -31,8 +32,11 @@ type ItemContextType = {
 const ItemContext = createContext<ItemContextType | undefined>(undefined);
 
 export const ItemContextProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useLocalStorage<Item[]>('items', []);
+    const [itemsRoot, setItems] = useLocalStorage<Item[]>('items', []);
     const [groupBy, setGroupBy] = useLocalStorage<GroupBy>('groupBy', 'none');
+    const items = useMemo(() => {
+        return sortBy(itemsRoot, ['createdAt'], ['asc']);
+    }, [itemsRoot]);
 
     const lists = useMemo(() => {
         const lists: { [key: string]: List } = {};

@@ -167,9 +167,11 @@ export const parseUserInput = async (input: string, items: ItemType[]): Promise<
     // Get relevant documents based on similarity search
     const relevantDocs = await getRelevantDocuments(input, 3);
     const contextFromSimilarItems = formatDocumentsForContext(relevantDocs);
-    
+
+    const session = await getSession();
     const prompt = `
 **Context:**
+- User Name: "${session?.name || 'Buddy'}"
 - User Input: "${input}"
 
 **Existing Data:**

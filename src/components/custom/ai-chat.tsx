@@ -7,6 +7,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
 import AIInputTextArea from '../ui/ai-input-textarea'
 import { useChatContext } from '../context/chat-context'
 import { ChatMessageComponent } from './chat-message'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import Button from './button'
+import { PopoverClose } from '@radix-ui/react-popover'
 
 type Props = {}
 
@@ -32,21 +35,32 @@ const AIChat = ({ }: Props) => {
                         heading.className
                     )}>Ask Bud</h1>
                 </div>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <div 
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <div
                             className='h-[40px] w-[40px] flex items-center justify-center rounded-xl hover:bg-accent transition-all cursor-pointer text-xl'
-                            onClick={clearMessages}
                         >
                             🚫
                         </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        Clear Chat
-                    </TooltipContent>
-                </Tooltip>
+                    </PopoverTrigger>
+                    <PopoverContent className='p-0 rounded-xl' side='bottom' align='center'>
+                        <div className="text-sm font-medium text-muted-foreground p-3 border-b">
+                            Are you sure you want to clear the chat?
+                        </div>
+                        <div className="flex items-center gap-3 justify-end py-2 px-3">
+                            <Button onClick={clearMessages} className='text-red-500 hover:bg-red-50 border-red-100'>
+                                Clear
+                            </Button>
+                            <PopoverClose asChild>
+                                <Button>
+                                    Cancel
+                                </Button>
+                            </PopoverClose>
+                        </div>
+                    </PopoverContent>
+                </Popover>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-4">
                 {messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
@@ -67,7 +81,7 @@ const AIChat = ({ }: Props) => {
                     </div>
                 )}
             </div>
-            
+
             <AIInputTextArea />
         </div>
     )

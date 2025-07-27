@@ -6,7 +6,7 @@ const Button = ({ className, children, ...props }: Props) => {
     return (
         <button
             className={cn(
-                'h-[38px] text-sm font-medium cursor-pointer px-4',
+                'h-[38px] text-sm font-semibold cursor-pointer px-4',
                 'border rounded-md hover:bg-accent transition-all flex items-center gap-3',
                 className
             )}
