@@ -1,6 +1,6 @@
 import { ItemType, ToolResult } from "@/lib/types"
 import { generateText } from "ai"
-import { google } from "@ai-sdk/google"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { 
     initializeVectorStore, 
     getRelevantDocuments, 
@@ -9,6 +9,24 @@ import {
     updateItemInVectorStore,
     removeItemFromVectorStore
 } from "./vectorstore"
+import { getSession } from "./session"
+
+/**
+ * Get AI instance with API key from session
+ */
+async function getAI() {
+    const session = await getSession();
+    
+    if (!session?.apiKey) {
+        throw new Error('Please go to settings "/settings" and set the API Key');
+    }
+
+    const google = createGoogleGenerativeAI({
+        apiKey: session.apiKey
+    });
+
+    return google("gemini-2.0-flash-exp");
+}
 
 // Tool definitions
 export type Tool = {
@@ -371,7 +389,7 @@ function cleanMarkdownFromHTML(text: string): string {
 // AI-powered search summary generation
 async function generateAISearchSummary(query: string, results: any[]): Promise<string> {
     try {
-        const ai = google("gemini-2.0-flash-exp");
+        const ai = await getAI();
         const result = await generateText({
             model: ai,
             prompt: `You are a productivity assistant. Summarize search results for a user's query.
@@ -416,7 +434,7 @@ async function generateAISummary(items: ItemType[], params: any): Promise<string
             tags: item.tags
         }));
 
-        const ai = google("gemini-2.0-flash-exp");
+        const ai = await getAI();
         const result = await generateText({
             model: ai,
             prompt: `You are a productivity assistant. Create a helpful summary of the user's items.
@@ -460,7 +478,7 @@ async function generateAIAddSummary(newItems: ItemType[]): Promise<string> {
             description: item.description
         }));
 
-        const ai = google("gemini-2.0-flash-exp");
+        const ai = await getAI();
         const result = await generateText({
             model: ai,
             prompt: `You are a productivity assistant. Summarize what was just added to the user's workspace.
@@ -499,7 +517,7 @@ async function generateAIUpdateSummary(changes: { before: ItemType; after: ItemT
             )
         }));
 
-        const ai = google("gemini-2.0-flash-exp");
+        const ai = await getAI();
         const result = await generateText({
             model: ai,
             prompt: `You are a productivity assistant. Summarize what was just updated in the user's workspace.
@@ -547,7 +565,7 @@ async function generateAIAnswerFromContext(question: string, docs: any[]): Promi
         });
 
         // Generate AI response
-        const ai = google("gemini-2.0-flash-exp");
+        const ai = await getAI();
         const result = await generateText({
             model: ai,
             prompt: `You are a helpful productivity assistant. Answer the user's question based on their personal items.

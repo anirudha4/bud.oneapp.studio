@@ -2,14 +2,26 @@ import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { ItemType } from "./types";
-
-// Initialize Google embeddings
-const embeddings = new GoogleGenerativeAIEmbeddings({
-    model: "text-embedding-004", // Google's latest embedding model
-});
+import { getSession } from "./session";
 
 // Global vector store instance
 let vectorStore: MemoryVectorStore | null = null;
+
+/**
+ * Get embeddings instance with API key from session
+ */
+async function getEmbeddings(): Promise<GoogleGenerativeAIEmbeddings> {
+    const session = await getSession();
+    
+    if (!session?.apiKey) {
+        throw new Error('Please go to settings "/settings" and set the API Key');
+    }
+
+    return new GoogleGenerativeAIEmbeddings({
+        model: "text-embedding-004", // Google's latest embedding model
+        apiKey: session.apiKey,
+    });
+}
 
 /**
  * Convert ItemType to LangChain Document
@@ -55,6 +67,8 @@ export function itemToDocument(item: ItemType): Document {
  * Initialize or update the vector store with items
  */
 export async function initializeVectorStore(items: ItemType[]): Promise<MemoryVectorStore> {
+    const embeddings = await getEmbeddings();
+    
     if (items.length === 0) {
         // Create empty vector store if no items
         vectorStore = new MemoryVectorStore(embeddings);

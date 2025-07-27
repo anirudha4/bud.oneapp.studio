@@ -115,14 +115,14 @@ export default function AIInputTextArea() {
                 });
             });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error in AI chat:', error);
             toast.error("Failed to process your request. Please try again.");
 
             // Add error message to chat
             addMessage({
                 role: 'assistant',
-                content: "I apologize, but I encountered an error processing your request. Please try rephrasing your message or try again later."
+                content: error.message
             });
         } finally {
             setLoading(false);

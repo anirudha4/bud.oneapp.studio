@@ -46,7 +46,7 @@ export const ItemCard = ({ item, compact = false }: Props) => {
                                 {item.objectType}
                             </span>
 
-                            {item.isTask && (
+                            {/* {item.isTask && (
                                 <>
                                     <span className="text-gray-400">•</span>
                                     <span className="text-blue-500 dark:text-blue-400 text-xs">Task</span>
@@ -58,7 +58,7 @@ export const ItemCard = ({ item, compact = false }: Props) => {
                                     <span className="text-gray-400">•</span>
                                     <span className="text-green-500 dark:text-green-400 text-xs">Note</span>
                                 </>
-                            )}
+                            )} */}
                         </div>
 
                         {item.tags && item.tags.length > 0 && (

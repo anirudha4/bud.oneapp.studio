@@ -1,6 +1,6 @@
 'use server'
 import { generateText } from "ai"
-import { google } from "@ai-sdk/google"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { ItemType, ChatMessage, ToolResult } from "./types"
 import { 
     initializeVectorStore, 
@@ -11,17 +11,33 @@ import {
     removeItemFromVectorStore
 } from "./vectorstore"
 import { AVAILABLE_TOOLS, executeTool } from "./agents"
+import { getSession } from "./session"
 
-const ai = google("gemini-2.5-pro", {
-    structuredOutputs: true,
-    useSearchGrounding: true,
-    dynamicRetrievalConfig: {
-        mode: 'MODE_DYNAMIC'
+/**
+ * Get AI instance with API key from session
+ */
+async function getAI() {
+    const session = await getSession();
+    
+    if (!session?.apiKey) {
+        throw new Error('Please go to settings "/settings" and set the API Key');
     }
-})
+
+    const google = createGoogleGenerativeAI({
+        apiKey: session.apiKey
+    });
+
+    return google("gemini-2.5-pro", {
+        structuredOutputs: true,
+        useSearchGrounding: true,
+        dynamicRetrievalConfig: {
+            mode: 'MODE_DYNAMIC'
+        }
+    });
+}
 
 const SYSTEM_PROMPTS = `
-You are a versatile Productivity AI assistant for an app called Bud. You have access to various tools to help users manage their tasks and notes effectively.
+You are a versatile Productivity AI assistant for an app called Bud. You have access to various tools to help users manage their tasks, notes, events, meals, recipes and any other items whatever user asks for.
 
 **Available Tools:**
 ${Object.values(AVAILABLE_TOOLS).map(tool => `
@@ -166,6 +182,7 @@ ${contextFromSimilarItems}
 `;
 
     try {
+        const ai = await getAI();
         const response = await generateText({
             model: ai,
             prompt,
@@ -183,9 +200,9 @@ ${contextFromSimilarItems}
         console.log("responseText", response.text);
 
         return JSON.parse(cleanedText) as ItemType | ItemType[];
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error generating object:", error);
-        throw new Error("Failed to parse user input");
+        throw new Error(error.message || "An error occurred while processing your request.");
     }
 }
 
@@ -233,6 +250,7 @@ Please analyze the user input and provide a response with appropriate tool calls
 `;
 
     try {
+        const ai = await getAI();
         const response = await generateText({
             model: ai,
             prompt,
