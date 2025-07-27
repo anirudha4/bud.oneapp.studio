@@ -24,9 +24,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Bud | One App Studio",
   description: "Bud is an AI productivity app for managing notes and tasks.",
-  other: {
-    "google-site-verification": "uzyTa_pgDdFdx-i-J0cdK1HuluguNRjg30Rdyd7dg7Y",
-  },
 };
 
 export default function RootLayout({
