@@ -58,5 +58,3 @@ Let me know if you want to include specific sections (e.g., a detailed feature l
 
 <img width="451" height="1013" alt="Screenshot 2025-07-27 at 9 59 20 PM" src="https://github.com/user-attachments/assets/2df71542-6a3d-4df0-9e10-2e850cbc532b" />
 
-
-<img width="1254" height="1016" alt="Screenshot 2025-07-27 at 9 59 50 PM" src="https://github.com/user-attachments/assets/06a2c7bb-4620-4d9f-9b2f-ad4baa52b0b3" />
