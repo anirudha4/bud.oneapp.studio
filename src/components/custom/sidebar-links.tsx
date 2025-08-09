@@ -1,10 +1,19 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import Link from 'next/link'
+import { logout } from '@/actions/logout'
+import { Loader2Icon } from 'lucide-react'
 
 type Props = {}
 
 const SidebarLinks = ({ }: Props) => {
+    const [loading, setLoading] = useState(false);
+    const handleLogout = async () => {
+        setLoading(true);
+        await logout();
+        setLoading(false);
+    }
     return (
         <div className="flex-1 flex flex-col mt-5 justify-between">
             <div className="flex flex-col gap-2 items-center">
@@ -13,11 +22,14 @@ const SidebarLinks = ({ }: Props) => {
             </div>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div className='h-[40px] w-[40px] flex items-center justify-center rounded-2xl hover:bg-accent transition-all cursor-pointer text-xl mx-auto mb-5'>
-                        <span>🚪</span>
+                    <div onClick={handleLogout} className='h-[40px] w-[40px] flex items-center justify-center rounded-2xl hover:bg-accent transition-all cursor-pointer text-xl mx-auto mb-5'>
+                        <span>
+                            {loading && <Loader2Icon className={`animate-spin ${loading ? 'block' : 'hidden'}`} />}
+                            {!loading && '🚪'}
+                        </span>
                     </div>
                 </TooltipTrigger>
-                <TooltipContent side='right'>
+                <TooltipContent side='right' >
                     <p className='text-sm'>Logout</p>
                 </TooltipContent>
             </Tooltip>

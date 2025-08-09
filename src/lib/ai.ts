@@ -82,7 +82,7 @@ ${Object.values(AVAILABLE_TOOLS).map(tool => `
       "objectType": "string", 
       "objectIcon": "string",
       "name": "string",
-      "description": "string", // HTML format
+      "description": "string", // HTML format (if nothing, then add <p>No description</p>)
       "tags": ["string"],
       "fields": object,
       "isNote": boolean,

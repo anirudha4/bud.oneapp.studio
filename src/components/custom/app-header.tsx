@@ -20,7 +20,7 @@ const AppHeader = ({ }: Props) => {
                     <PopoverTrigger asChild>
                         <Button>
                             <Trash size={16} />
-                            Delete All
+                            Delete All Data
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className='p-0 rounded-xl' side='bottom' align='center'>
@@ -39,14 +39,6 @@ const AppHeader = ({ }: Props) => {
                         </div>
                     </PopoverContent>
                 </Popover>
-                <Button>
-                    <Download size={16} />
-                    Export
-                </Button>
-                <Button>
-                    <Upload size={16} />
-                    Import
-                </Button>
             </div>
         </div>
     )

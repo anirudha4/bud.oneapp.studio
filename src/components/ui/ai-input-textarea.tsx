@@ -148,10 +148,10 @@ export default function AIInputTextArea() {
                             <Textarea
                                 id="ai-input-15"
                                 value={value}
-                                placeholder={"What can I do for you?"}
+                                placeholder={`What can I do for you?\nType @Task, @Note, @Event etc. to create a new item.`}
                                 className={cn(
                                     "w-full border-none rounded-b-none px-4 py-3 bg-background dark:text-white placeholder:text-black/70 dark:placeholder:text-white/70 resize-none focus-visible:ring-0 focus-visible:ring-offset-0",
-                                    "min-h-[72px]"
+                                    "min-h-[80px] placeholder:leading-[25px]"
                                 )}
                                 ref={textareaRef}
                                 onKeyDown={handleKeyDown}

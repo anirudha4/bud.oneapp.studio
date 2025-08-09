@@ -30,10 +30,14 @@ const Item = ({
                     </div>
                 </ItemSheet>
                 <div className="p-4">
-                    <p
+                    {item.description ? <p
                         className="text-sm text-muted-foreground leading-8 line-clamp-6"
                         dangerouslySetInnerHTML={{ __html: item.description as string }}
-                    />
+                    /> : (
+                        <p className="text-sm text-muted-foreground leading-8 line-clamp-6">
+                            No description
+                        </p>
+                    )}
                 </div>
                 {!isEmpty(item.tags) && (
                     <div className="flex items-center min-h-12 overflow-x-auto px-4 border-t text-sm text-muted-foreground gap-1 py-1">
